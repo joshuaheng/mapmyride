@@ -13,3 +13,8 @@ body { height: 100%; margin: 0; padding: 0 }
      border: 2px solid black;
      white-space: normal;
    }
+
+.navbar{
+     margin-bottom:0px;
+     border-radius:0px;
+}
