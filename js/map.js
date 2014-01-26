@@ -139,7 +139,7 @@ google.maps.Marker.prototype.animatedMoveTo = function(toLat, toLng) {
 function initialize() {
     var mapOptions = {
     	center: new google.maps.LatLng(40.1102576, -88.2258257),
-        zoom: 12
+        zoom: 14
     };
     
     map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
