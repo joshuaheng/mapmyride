@@ -165,7 +165,7 @@ myFireVehicles.once('value',function(data){
    			console.log(obj);
    			var color = obj.trip.route_id.split(" ")[0].toLowerCase();
         if(color==="air"){
-          color = airbus;
+          color = "airbus";
         }
    			//console.log(color);
    			myFireVehicles.child(obj.vehicle_id).set({vehicle_id:obj.vehicle_id, route:obj.trip.route_id, direction:obj.trip.direction, lat:obj.location.lat, lon:obj.location.lon});
