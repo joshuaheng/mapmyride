@@ -239,4 +239,5 @@ function filterSearch(elem){
 function test(){
   var filtered = markers.filter(filtersearch);
   console.log(filtered);
+  return false;
 }
