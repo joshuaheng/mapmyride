@@ -234,6 +234,8 @@ function filterSearch(elem){
   if(elem.trip.route_id.split(" ")[0]===bus[0] && elem.trip.direction===bus[1]){
     return elem;
   }
+  else
+    return null;
 }
 
 function test(){
