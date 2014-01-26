@@ -74,7 +74,7 @@ function checkFirstVisit() {
 function getBusPos(){
 	return $.ajax({url:"https://web.engr.illinois.edu/~heng3/hacktech/getVehicles.php"});
 }
-function addMarker(id,lat,lon,map,color,name){
+function addMarker(id,lat,lon,map,color,route_id, direction){
 	//console.log(color);
 	var marker_pos = new google.maps.LatLng(lat, lon);
 	//console.log(marker_pos);
@@ -85,7 +85,7 @@ function addMarker(id,lat,lon,map,color,name){
     map: map,
     draggable:true,
     title: 'Click to zoom',
-    labelContent: name,
+    labelContent: route_id + " " + direction,
     labelAnchor: new google.maps.Point(42, 0),
     labelClass: "labels", // the CSS class for the label
   });
@@ -169,7 +169,7 @@ myFireVehicles.once('value',function(data){
         }
    			//console.log(color);
    			myFireVehicles.child(obj.vehicle_id).set({vehicle_id:obj.vehicle_id, route:obj.trip.route_id, direction:obj.trip.direction, lat:obj.location.lat, lon:obj.location.lon});
-   			addMarker(obj.vehicle_id,obj.location.lat,obj.location.lon,map,color,obj.trip.shape_id);
+   			addMarker(obj.vehicle_id,obj.location.lat,obj.location.lon,map,color,obj.trip.route_id, obj.trip.direction);
    			//console.log(obj.vehicle_id);
    		}
    	});
