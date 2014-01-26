@@ -26,7 +26,7 @@ var icons = {
   illini: {
     icon: iconBase + 'illini.png'
   },
-  lavendar: {
+  lavender: {
     icon: iconBase + 'lavendar.png'
   },
   lime: {
