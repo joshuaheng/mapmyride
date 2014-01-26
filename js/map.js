@@ -193,3 +193,50 @@ console.log(markers);
 setInterval("updateFirebase()",10000);
 updateFirebase();
 
+//http://stackoverflow.com/questions/4057665/google-maps-api-v3-find-nearest-markers
+function find_closest_marker( lat1, lon1 ) {    
+    var pi = Math.PI;
+    var R = 6371; //equatorial radius
+    var distances = [];
+    var closest = -1;
+
+    for( i=0;i<markers.length; i++ ) {  
+        var lat2 = markers[i].position.lat();
+        var lon2 = markers[i].position.lng();
+
+        var chLat = lat2-lat1;
+        var chLon = lon2-lon1;
+
+        var dLat = chLat*(pi/180);
+        var dLon = chLon*(pi/180);
+
+        var rLat1 = lat1*(pi/180);
+        var rLat2 = lat2*(pi/180);
+
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+                    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(rLat1) * Math.cos(rLat2); 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c;
+
+        distances[i] = d;
+        if ( closest == -1 || d < distances[closest] ) {
+            closest = i;
+        }
+    }
+
+    // (debug) The closest marker is:
+    console.log(markers[closest]);
+}
+
+function filterSearch(elem){
+  var param = document.getElementById("searchparam").value;
+  var bus = param.split(" ");
+  if(elem.trip.route_id.split(" ")[0]===bus[0] && elem.trip.direction===bus[1]){
+    return elem;
+  }
+}
+
+function test(){
+  var filtered = markers.filter(filtersearch);
+  console.log(filtered);
+}
