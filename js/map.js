@@ -1,5 +1,8 @@
 var map;
+var initialLocation;
+var browserSupportFlag =  new Boolean();
 var markers = {};
+var filtered = [];
 var iconBase = 'http://web.engr.illinois.edu/~heng3/hacktech/icons/';
 var icons = {
   airbus: {
@@ -71,8 +74,8 @@ function checkFirstVisit() {
 function getBusPos(){
 	return $.ajax({url:"https://web.engr.illinois.edu/~heng3/hacktech/getVehicles.php"});
 }
-function addMarker(id,lat,lon,map,color,name){
-	console.log(color);
+function addMarker(id,lat,lon,map,color,route_id, direction){
+	//console.log(color);
 	var marker_pos = new google.maps.LatLng(lat, lon);
 	//console.log(marker_pos);
     //marker's position will keep changing based on the bus's details
@@ -82,19 +85,19 @@ function addMarker(id,lat,lon,map,color,name){
     map: map,
     draggable:true,
     title: 'Click to zoom',
-    labelContent: name,
+    labelContent: route_id + " " + direction,
     labelAnchor: new google.maps.Point(42, 0),
     labelClass: "labels", // the CSS class for the label
   });
     markers[id]=marker;
-    console.log(markers);
+    //console.log(markers);
 }
 
 function updateFirebase(){
 	var bus_info = getBusPos();
    	bus_info.success(function(data){
    		var vehicles = data.vehicles;
-   		console.log(vehicles);
+   		//console.log(vehicles);
    		//for each vehicle, call addmarker
    		for(var key in vehicles){
    			var obj = vehicles[key];
@@ -161,9 +164,12 @@ myFireVehicles.once('value',function(data){
    			var obj = vehicles[key];
    			console.log(obj);
    			var color = obj.trip.route_id.split(" ")[0].toLowerCase();
-   			console.log(color);
+        if(color==="air"){
+          color = "airbus";
+        }
+   			//console.log(color);
    			myFireVehicles.child(obj.vehicle_id).set({vehicle_id:obj.vehicle_id, route:obj.trip.route_id, direction:obj.trip.direction, lat:obj.location.lat, lon:obj.location.lon});
-   			addMarker(obj.vehicle_id,obj.location.lat,obj.location.lon,map,color,obj.trip.shape_id);
+   			addMarker(obj.vehicle_id,obj.location.lat,obj.location.lon,map,color,obj.trip.route_id, obj.trip.direction);
    			//console.log(obj.vehicle_id);
    		}
    	});
@@ -189,7 +195,90 @@ myFireVehicles.on('value',function(data){
 		//console.log(markers);
 	});
 });
-console.log(markers);
+//console.log(markers);
 setInterval("updateFirebase()",10000);
 updateFirebase();
 
+//http://stackoverflow.com/questions/4057665/google-maps-api-v3-find-nearest-markers
+function find_closest_marker( lat1, lon1 ) {    
+    var pi = Math.PI;
+    var R = 6371; //equatorial radius
+    var distances = [];
+    var closest = -1;
+
+    for( i=0;i<filtered.length; i++ ) {  
+        var lat2 = filtered[i].location.lat;
+        var lon2 = filtered[i].location.lng;
+
+        var chLat = lat2-lat1;
+        var chLon = lon2-lon1;
+
+        var dLat = chLat*(pi/180);
+        var dLon = chLon*(pi/180);
+
+        var rLat1 = lat1*(pi/180);
+        var rLat2 = lat2*(pi/180);
+
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+                    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(rLat1) * Math.cos(rLat2); 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c;
+
+        distances[i] = d;
+        if ( closest == -1 || d < distances[closest] ) {
+            closest = i;
+        }
+    }
+
+    // (debug) The closest marker is:
+    return filtered[closest];
+}
+
+function filterSearch(elem){
+  var param = document.getElementById("searchparam").value;
+  var bus = param.split(" ");
+  console.log(bus);
+  if(elem.trip.route_id.split(" ")[0]===bus[0].toUpperCase() && elem.trip.direction.toUpperCase()===bus[1].toUpperCase()){
+    return elem;
+  }
+  else
+    return null;
+}
+
+function test(){
+  var bus_info = getBusPos();
+    bus_info.success(function(data){
+      var buses = data.vehicles;
+      console.log(buses);
+      filtered = buses.filter(filterSearch);
+      console.log(filtered);
+      if(filtered.length == 1){
+        var search_pos = new google.maps.LatLng(filtered[0].location.lat, filtered[0].location.lon);
+        map.setZoom(17);
+        map.panTo(search_pos);
+      }
+      else if(filtered.length > 1){
+        if(navigator.geolocation) {
+          browserSupportFlag = true;
+          navigator.geolocation.getCurrentPosition(function(position) {
+            //this should be used after demoday
+            //initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            initialLocation = new google.maps.LatLng(40.1097891,-88.2272609);
+            var closestbus = find_closest_marker(40.1097891,-88.2272609);
+            var search_pos = new google.maps.LatLng(closestbus.location.lat, closestbus.location.lon);
+            map.setZoom(17);
+            map.panTo(search_pos);
+          }, function() {
+            handleNoGeolocation(browserSupportFlag);
+          });
+        }
+        console.log(initialLocation);
+      }
+      else{
+        alert("service not running");
+      }
+    });
+  //var filtered = markers.filter(filterSearch);
+  //console.log(filtered);
+  return false;
+}
