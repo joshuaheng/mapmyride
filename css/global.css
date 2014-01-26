@@ -1,0 +1,15 @@
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#map-canvas { height: 100% }
+
+.labels {
+     color: red;
+     background-color: white;
+     font-family: "Lucida Grande", "Arial", sans-serif;
+     font-size: 10px;
+     font-weight: normal;
+     text-align: center;
+     width: 80px;     
+     border: 2px solid black;
+     white-space: normal;
+   }
