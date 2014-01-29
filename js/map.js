@@ -277,9 +277,9 @@ function test(){
           browserSupportFlag = true;
           navigator.geolocation.getCurrentPosition(function(position) {
             //this should be used after demoday
-            //initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-            initialLocation = new google.maps.LatLng(40.1097891,-88.2272609);
-            var closestbus = find_closest_marker(40.1097891,-88.2272609);
+            initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            
+            var closestbus = find_closest_marker(position.coords.latitude,position.coords.longitude);
             var search_pos = new google.maps.LatLng(closestbus.location.lat, closestbus.location.lon);
             map.setZoom(17);
             map.panTo(search_pos);
