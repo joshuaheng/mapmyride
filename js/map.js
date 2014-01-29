@@ -164,6 +164,7 @@ myFireVehicles.once('value',function(data){
    			var obj = vehicles[key];
    			console.log(obj);
    			var color = obj.trip.route_id.split(" ")[0].toLowerCase();
+   			
         if(color==="air"){
           color = "airbus";
         }
@@ -179,6 +180,7 @@ myFireVehicles.once('value',function(data){
         if(color==="yellowhopper"){
         	color="yellow";
         }
+        console.log(color);
    			//console.log(color);
    			myFireVehicles.child(obj.vehicle_id).set({vehicle_id:obj.vehicle_id, route:obj.trip.route_id, direction:obj.trip.direction, lat:obj.location.lat, lon:obj.location.lon});
    			addMarker(obj.vehicle_id,obj.location.lat,obj.location.lon,map,color,obj.trip.route_id, obj.trip.direction);
