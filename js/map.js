@@ -20,7 +20,13 @@ var icons = {
   gold: {
     icon: iconBase + 'gold.png'
   },
+  goldhopper: {
+    icon: iconBase + 'gold.png'
+  },
   green: {
+    icon: iconBase + 'green.png'
+  },
+  greenhopper: {
     icon: iconBase + 'green.png'
   },
   grey: {
@@ -41,6 +47,9 @@ var icons = {
   orange: {
     icon: iconBase + 'orange.png'
   },
+  orangehopper: {
+    icon: iconBase + 'orange.png'
+  },
   pink: {
     icon: iconBase + 'pink.png'
   },
@@ -57,6 +66,9 @@ var icons = {
     icon: iconBase + 'teal.png'
   },
   yellow: {
+    icon: iconBase + 'yellow.png'
+  },
+  yellowhopper: {
     icon: iconBase + 'yellow.png'
   }
 };
@@ -168,18 +180,7 @@ myFireVehicles.once('value',function(data){
         if(color==="air"){
           color = "airbus";
         }
-        if(color==="greenhopper"){
-        	color="green";
-        }
-        if(color==="goldhopper"){
-        	color="gold";
-        }
-        if(color==="orangehopper"){
-        	color="orange";
-        }
-        if(color==="yellowhopper"){
-        	color="yellow";
-        }
+       
         console.log(color);
    			//console.log(color);
    			myFireVehicles.child(obj.vehicle_id).set({vehicle_id:obj.vehicle_id, route:obj.trip.route_id, direction:obj.trip.direction, lat:obj.location.lat, lon:obj.location.lon});
