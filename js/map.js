@@ -205,8 +205,8 @@ myFireVehicles.on('value',function(data){
 			//continue
 		}
 		else
-			//markers[busObj.vehicle_id].setPosition = newpos;
-		markers[busObj.vehicle_id].animatedMoveTo(busObj.lat, busObj.lon);
+			markers[busObj.vehicle_id].setPosition = newpos;
+		//markers[busObj.vehicle_id].animatedMoveTo(busObj.lat, busObj.lon);
 		//console.log(markers);
 	});
 });
