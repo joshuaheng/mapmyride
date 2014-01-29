@@ -170,6 +170,15 @@ myFireVehicles.once('value',function(data){
         if(color==="greenhopper)"){
         	color="green";
         }
+        if(color==="goldhopper"){
+        	color="gold";
+        }
+        if(color==="orangehopper"){
+        	color="orange";
+        }
+        if(color==="yellowhopper"){
+        	color="yellow";
+        }
    			//console.log(color);
    			myFireVehicles.child(obj.vehicle_id).set({vehicle_id:obj.vehicle_id, route:obj.trip.route_id, direction:obj.trip.direction, lat:obj.location.lat, lon:obj.location.lon});
    			addMarker(obj.vehicle_id,obj.location.lat,obj.location.lon,map,color,obj.trip.route_id, obj.trip.direction);
