@@ -168,7 +168,7 @@ myFireVehicles.once('value',function(data){
         if(color==="air"){
           color = "airbus";
         }
-        if(color==="greenhopper)"){
+        if(color==="greenhopper"){
         	color="green";
         }
         if(color==="goldhopper"){
