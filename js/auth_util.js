@@ -29,7 +29,7 @@
  * https://code.google.com/p/google-api-javascript-client/wiki/Authentication
  */
 var clientId = '1064462846036-3df0ico04k4987cteskhho1mtgd05n4m.apps.googleusercontent.com';
-var apiKey = 'AIzaSyA8hU-LYPfvIzO_eVwSKmNoqIlvZq7NyXE';
+var apiKey = '';
 var scopes = 'https://www.googleapis.com/auth/analytics.readonly';
 
 
